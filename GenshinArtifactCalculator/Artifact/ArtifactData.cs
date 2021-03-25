@@ -67,7 +67,7 @@ namespace GenshinArtifactCalculator.Artifact
                     Console.WriteLine(lineText);
                 }
             }
-            if (Name == null || Type == null || MainStat == null || MainStatValue == null || SubStats == null)
+            if (Name == null || Type == null || MainStat == null || SubStats == null)
             {
                 throw new Exception("Could not fully deserialize artifact data");
             }
