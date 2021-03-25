@@ -63,6 +63,7 @@ namespace GenshinArtifactCalculator.Artifact
                             SubStats[stat] = double.Parse(lineText.Split("+")[1].Replace(",", "").Replace("%", ""));
                             break;
                     }
+                    // DEBUG
                     Console.WriteLine(lineText);
                 }
             }
