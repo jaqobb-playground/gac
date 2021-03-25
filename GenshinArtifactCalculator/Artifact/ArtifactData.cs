@@ -10,7 +10,7 @@ namespace GenshinArtifactCalculator.Artifact
         public readonly ArtifactType                     Type;
         public readonly int                              UpgradeLevel;
         public readonly ArtifactStat                     MainStat;
-        public readonly object                           MainStatValue;
+        public readonly double                           MainStatValue;
         public readonly Dictionary<ArtifactStat, double> SubStats;
 
         public ArtifactData(IDictionary<object, object> data)
@@ -80,11 +80,11 @@ namespace GenshinArtifactCalculator.Artifact
 
         public string GetBetterMainStatValue()
         {
-            if (MainStat == ArtifactStats.FlatHealth || MainStat == ArtifactStats.FlatAttack || MainStat == ArtifactStats.FlatDefense || MainStat == ArtifactStats.ElementalMastery)
+            if (MainStat.SpecialCharacter != null && MainStat.SpecialCharacter.Value == '%')
             {
-                return $"+{MainStatValue}";
+                return $"+{MainStatValue:0.0}%";
             }
-            return $"+{MainStatValue}%";
+            return $"+{MainStatValue}";
         }
 
         public string GetBetterSubStats()
@@ -92,7 +92,7 @@ namespace GenshinArtifactCalculator.Artifact
             string result = "";
             foreach ((ArtifactStat subStatKey, double subStatValue) in SubStats)
             {
-                result += $" - {subStatKey.Name}+";
+                result += $" - {subStatKey.Name} +";
                 if (subStatKey.SpecialCharacter != null && subStatKey.SpecialCharacter.Value == '%')
                 {
                     result += $"{subStatValue:0.0}%";
