@@ -6,12 +6,13 @@ namespace GenshinArtifactCalculator.Artifact
 {
     public class ArtifactData
     {
-        public readonly string                           Name;
-        public readonly ArtifactType                     Type;
-        public readonly int                              UpgradeLevel;
-        public readonly ArtifactStat                     MainStat;
-        public readonly double                           MainStatValue;
-        public readonly Dictionary<ArtifactStat, double> SubStats;
+        public readonly string                            Name;
+        public readonly ArtifactType                      Type;
+        public readonly int                               UpgradeLevel;
+        public readonly int                               RarityLevel;
+        public readonly ArtifactStat                      MainStat;
+        public readonly double                            MainStatValue;
+        public readonly Dictionary<ArtifactStat, double>? SubStats;
 
         public ArtifactData(IDictionary<object, object> data)
         {
@@ -63,19 +64,53 @@ namespace GenshinArtifactCalculator.Artifact
                             SubStats[stat] = double.Parse(lineText.Split("+")[1].Replace(",", "").Replace("%", ""));
                             break;
                     }
-                    // DEBUG
-                    Console.WriteLine(lineText);
                 }
             }
-            if (Name == null || Type == null || MainStat == null || SubStats == null)
+            if (Name == null || Type == null || MainStat == null)
             {
                 throw new Exception("Could not fully deserialize artifact data");
+            }
+            if (UpgradeLevel > 16)
+            {
+                RarityLevel = 5;
+            }
+            else
+            {
+                foreach (ArtifactStatRarity rarity in MainStat.Rarities)
+                {
+                    if (MainStat.SpecialCharacter != null && MainStat.SpecialCharacter.Value == '%')
+                    {
+                        if (rarity.MainStatData!.GetForLevelAsDouble(UpgradeLevel).CompareTo(MainStatValue) == 0)
+                        {
+                            RarityLevel = rarity.Level;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (rarity.MainStatData!.GetForLevelAsInt(UpgradeLevel) == (int) MainStatValue)
+                        {
+                            RarityLevel = rarity.Level;
+                            break;
+                        }
+                    }
+                }
             }
         }
 
         public string GetBetterUpgradeLevel()
         {
             return $"+{UpgradeLevel}";
+        }
+
+        public string GetBetterRarityLevel()
+        {
+            string result = string.Empty;
+            for (int rarityLevel = 1; rarityLevel <= RarityLevel; rarityLevel++)
+            {
+                result += "\u2605";
+            }
+            return result;
         }
 
         public string GetBetterMainStatValue()
@@ -89,7 +124,11 @@ namespace GenshinArtifactCalculator.Artifact
 
         public string GetBetterSubStats()
         {
-            string result = "";
+            if (SubStats == null)
+            {
+                return "none";
+            }
+            string result = "\n";
             foreach ((ArtifactStat subStatKey, double subStatValue) in SubStats)
             {
                 result += $" - {subStatKey.Name} +";

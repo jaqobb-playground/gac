@@ -78,7 +78,7 @@ namespace GenshinArtifactCalculator
                 }
             }
             ArtifactData artifact = new ArtifactData(data);
-            MessageBox.Show($"Name: {artifact.Name}\nType: {artifact.Type.Name}\nUpgrade level: {artifact.GetBetterUpgradeLevel()}\nMain stat: {artifact.MainStat.Name} {artifact.GetBetterMainStatValue()}\nSub stats:\n{artifact.GetBetterSubStats()}", "Artifact data", MessageBoxButtons.OK);
+            MessageBox.Show($"Name: {artifact.Name}\nType: {artifact.Type.Name}\nUpgrade level: {artifact.GetBetterUpgradeLevel()}\nRarity: {artifact.GetBetterRarityLevel()}\nMain stat: {artifact.MainStat.Name} {artifact.GetBetterMainStatValue()}\nSub stats: {artifact.GetBetterSubStats()}", "Artifact data", MessageBoxButtons.OK);
         }
     }
 }

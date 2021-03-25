@@ -1,21 +1,23 @@
-﻿namespace GenshinArtifactCalculator.Artifact
+﻿using System.Collections.Generic;
+
+namespace GenshinArtifactCalculator.Artifact
 {
     public class ArtifactStat
     {
-        public string Name
-        {
-            get;
-        }
+        public readonly string                   Name;
+        public readonly char?                    SpecialCharacter;
+        public readonly List<ArtifactStatRarity> Rarities;
 
-        public char? SpecialCharacter
-        {
-            get;
-        }
-
-        public ArtifactStat(string name, char? specialCharacter = null)
+        public ArtifactStat(string name, char? specialCharacter, List<ArtifactStatRarity> rarities)
         {
             Name             = name;
             SpecialCharacter = specialCharacter;
+            Rarities         = rarities;
+        }
+
+        public ArtifactStatRarity GetRarityByLevel(int level)
+        {
+            return Rarities[level - 1];
         }
     }
 }

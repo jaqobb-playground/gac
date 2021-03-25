@@ -2,10 +2,7 @@
 {
     public class ArtifactType
     {
-        public string Name
-        {
-            get;
-        }
+        public readonly string Name;
 
         public ArtifactType(string name)
         {
