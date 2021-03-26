@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GenshinArtifactCalculator.Artifact
 {
@@ -76,24 +77,10 @@ namespace GenshinArtifactCalculator.Artifact
             }
             else
             {
-                foreach (ArtifactStatRarity rarity in MainStat.Rarities)
+                foreach (ArtifactStatRarity rarity in MainStat.Rarities.Where(rarity => rarity.MainStatData!.PossibleValues.Length > UpgradeLevel && rarity.MainStatData!.PossibleValues[UpgradeLevel].CompareTo(MainStatValue) == 0))
                 {
-                    if (MainStat.SpecialCharacter != null && MainStat.SpecialCharacter.Value == '%')
-                    {
-                        if (rarity.MainStatData!.GetForLevelAsDouble(UpgradeLevel).CompareTo(MainStatValue) == 0)
-                        {
-                            RarityLevel = rarity.Level;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (rarity.MainStatData!.GetForLevelAsInt(UpgradeLevel) == (int) MainStatValue)
-                        {
-                            RarityLevel = rarity.Level;
-                            break;
-                        }
-                    }
+                    RarityLevel = rarity.Level;
+                    break;
                 }
             }
         }
@@ -128,10 +115,11 @@ namespace GenshinArtifactCalculator.Artifact
             {
                 return "none";
             }
-            string result = "\n";
+            string result = string.Empty;
             foreach ((ArtifactStat subStatKey, double subStatValue) in SubStats)
             {
-                result += $" - {subStatKey.Name} +";
+                result += "\n";
+                result += $" - {subStatKey.Name}+";
                 if (subStatKey.SpecialCharacter != null && subStatKey.SpecialCharacter.Value == '%')
                 {
                     result += $"{subStatValue:0.0}%";
@@ -140,9 +128,21 @@ namespace GenshinArtifactCalculator.Artifact
                 {
                     result += $"{subStatValue}";
                 }
-                result += "\n";
+                ArtifactStatRarityData subStatKeyData = subStatKey.GetRarityByLevel(RarityLevel).SubStatData!;
+                foreach (double subStatKeyDataValue in subStatKeyData.GetValues(subStatValue, UpgradeLevel / 4 + 1))
+                {
+                    result += "\n";
+                    if (subStatKey.SpecialCharacter != null && subStatKey.SpecialCharacter.Value == '%')
+                    {
+                        result += $"    - +{subStatKeyDataValue:0.0}/{subStatKeyData.PossibleValues[^1]:0.0}% ({subStatKeyData.GetIndexByValue(subStatKeyDataValue) + 1}/{subStatKeyData.PossibleValues.Length})";
+                    }
+                    else
+                    {
+                        result += $"    - +{subStatKeyDataValue}/{subStatKeyData.PossibleValues[^1]} ({subStatKeyData.GetIndexByValue(subStatKeyDataValue) + 1}/{subStatKeyData.PossibleValues.Length})";
+                    }
+                }
             }
-            return result.Substring(0, result.Length - 1);
+            return result;
         }
     }
 }
