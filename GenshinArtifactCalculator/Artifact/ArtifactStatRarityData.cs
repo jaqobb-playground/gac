@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GenshinArtifactCalculator.Util;
+using System;
+using System.Linq;
 
 namespace GenshinArtifactCalculator.Artifact
 {
@@ -11,7 +13,7 @@ namespace GenshinArtifactCalculator.Artifact
             PossibleValues = possibleValues;
         }
 
-        public double GetIndexByValue(double value)
+        public int GetIndexByValue(double value)
         {
             for (int valueIndex = 0; valueIndex < PossibleValues.Length; valueIndex++)
             {
@@ -23,36 +25,60 @@ namespace GenshinArtifactCalculator.Artifact
             return -1;
         }
 
-        public double[] GetValues(double value, int iterations)
+        public double[] GetValues(double currentValue, int iterations)
         {
+            double currentValueRounded = Math.Round(currentValue, 1);
             for (int iteration = 0; iteration < iterations; iteration++)
             {
-                for (int currentInnerIteration = 0; currentInnerIteration <= iteration; currentInnerIteration++)
+                double[] values         = new double[iteration + 1];
+                int      valueIndexFill = 0;
+                ComputationLoop:
+                foreach (double possibleValue in PossibleValues)
                 {
-                    double[] currentValues = Array.Empty<double>();
-                    for (int possibleValueIndex = currentInnerIteration; possibleValueIndex < PossibleValues.Length; possibleValueIndex++)
+                    values[valueIndexFill] = possibleValue;
+                    double  valuesSum              = Math.Round(values.Sum(), 1);
+                    decimal valuesSumDecimalPlaces = Utils.CountDecimalPlaces((decimal) valuesSum);
+                    if (valuesSum.CompareTo(currentValueRounded) == 0)
                     {
-                        double   possibleValue       = PossibleValues[possibleValueIndex];
-                        double[] currentValuesNew    = new double[currentValues.Length + 1];
-                        double   currentValuesNewSum = 0.0D;
-                        for (int currentValueIndex = 0; currentValueIndex < currentValues.Length; currentValueIndex++)
+                        return values;
+                    }
+                    if (valuesSumDecimalPlaces > 0)
+                    {
+                        if (Math.Round(valuesSum + 0.1D, 1).CompareTo(currentValueRounded) == 0 || Math.Round(valuesSum - 0.1D, 1).CompareTo(currentValueRounded) == 0)
                         {
-                            currentValuesNew[currentValueIndex] =  currentValues[currentValueIndex];
-                            currentValuesNewSum                 += currentValues[currentValueIndex];
+                            return values;
                         }
-                        currentValuesNew[^1] =  possibleValue;
-                        currentValuesNewSum  += possibleValue;
-                        int compareResult = Math.Round(currentValuesNewSum, 1).CompareTo(value);
-                        //Console.WriteLine(Math.Round(currentValuesNewSum, 1) + " (" + possibleValue + ") == " + value + " (" + compareResult + ")");
-                        if (compareResult == 0)
+                    }
+                    else
+                    {
+                        if (Math.Round(valuesSum + 1.0D, 1).CompareTo(currentValueRounded) == 0 || Math.Round(valuesSum - 1.0D, 1).CompareTo(currentValueRounded) == 0)
                         {
-                            return currentValuesNew;
+                            return values;
                         }
-                        if (compareResult > 0)
+                    }
+                }
+                if (values.Length is > 1 and < 7)
+                {
+                    bool continueComputation = values.Any(value => value.CompareTo(PossibleValues[^1]) != 0);
+                    if (continueComputation)
+                    {
+                        if (valueIndexFill == 0)
                         {
-                            break;
+                            values[0]      = PossibleValues[0];
+                            valueIndexFill = values.Length - 1;
+                            goto ComputationLoop;
                         }
-                        currentValues = currentValuesNew;
+                        if (values[valueIndexFill - 1].CompareTo(PossibleValues[^1]) != 0)
+                        {
+                            values[valueIndexFill - 1] = PossibleValues[GetIndexByValue(values[valueIndexFill - 1]) + 1];
+                            goto ComputationLoop;
+                        }
+                        valueIndexFill -= 1;
+                        if (valueIndexFill == 0)
+                        {
+                            valueIndexFill = values.Length - 1;
+                        }
+                        goto ComputationLoop;
                     }
                 }
             }

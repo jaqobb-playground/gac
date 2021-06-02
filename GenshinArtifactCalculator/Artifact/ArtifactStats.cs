@@ -7,6 +7,38 @@ namespace GenshinArtifactCalculator.Artifact
     // https://genshin-impact.fandom.com/wiki/Artifacts
     public static class ArtifactStats
     {
+        public static readonly ArtifactStat PercentageHealth = new ArtifactStat(
+            "HP",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    new ArtifactStatRarityData(1.2D, 1.5D)
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    new ArtifactStatRarityData(1.6D, 2.0D, 2.3D)
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    new ArtifactStatRarityData(2.5D, 2.8D, 3.2D, 3.5D)
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    new ArtifactStatRarityData(3.3D, 3.7D, 4.2D, 4.7D)
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    new ArtifactStatRarityData(4.1D, 4.7D, 5.3D, 5.8D)
+                )
+            }
+        );
         public static readonly ArtifactStat FlatHealth = new ArtifactStat(
             "HP",
             null,
@@ -40,8 +72,8 @@ namespace GenshinArtifactCalculator.Artifact
             }
         );
 
-        public static readonly ArtifactStat PercentageHealth = new ArtifactStat(
-            "HP",
+        public static readonly ArtifactStat PercentageAttack = new ArtifactStat(
+            "ATK",
             '%',
             new List<ArtifactStatRarity>
             {
@@ -72,7 +104,6 @@ namespace GenshinArtifactCalculator.Artifact
                 )
             }
         );
-
         public static readonly ArtifactStat FlatAttack = new ArtifactStat(
             "ATK",
             null,
@@ -101,46 +132,11 @@ namespace GenshinArtifactCalculator.Artifact
                 new ArtifactStatRarity(
                     5,
                     new ArtifactStatRarityData(47.0D, 60.0D, 73.0D, 86.0D, 100.0D, 113.0D, 126.0D, 139.0D, 152.0D, 166.0D, 179.0D, 192.0D, 205.0D, 219.0D, 232.0D, 245.0D, 258.0D, 272.0D, 285.0D, 298.0D, 311.0D),
-                    new ArtifactStatRarityData(13.0D, 14.0D, 16.0D, 18.0D, 19.0D)
+                    new ArtifactStatRarityData(14.0D, 16.0D, 18.0D, 19.0D)
                 )
             }
         );
 
-        public static readonly ArtifactStat PercentageAttack = new ArtifactStat(
-            "ATK",
-            '%',
-            new List<ArtifactStatRarity>
-            {
-                new ArtifactStatRarity(
-                    1,
-                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
-                    new ArtifactStatRarityData(1.2D, 1.5D)
-                ),
-                new ArtifactStatRarity(
-                    2,
-                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
-                    new ArtifactStatRarityData(1.6D, 2.0D, 2.3D)
-                ),
-                new ArtifactStatRarity(
-                    3,
-                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
-                    new ArtifactStatRarityData(2.5D, 2.8D, 3.2D, 3.5D)
-                ),
-                new ArtifactStatRarity(
-                    4,
-                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
-                    new ArtifactStatRarityData(3.3D, 3.7D, 4.2D, 4.7D)
-                ),
-                new ArtifactStatRarity(
-                    5,
-                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
-                    new ArtifactStatRarityData(3.5D, 4.1D, 4.7D, 5.3D, 5.8D)
-                )
-            }
-        );
-
-        //
-        // public static readonly ArtifactStat FlatDefense       = new ArtifactStat("DEF", null);
         public static readonly ArtifactStat PercentageDefense = new ArtifactStat(
             "DEF",
             '%',
@@ -170,6 +166,38 @@ namespace GenshinArtifactCalculator.Artifact
                     5,
                     new ArtifactStatRarityData(8.7D, 11.2D, 13.7D, 16.2D, 18.6D, 21.1D, 23.6D, 26.1D, 28.6D, 31.0D, 33.5D, 36.0D, 38.5D, 40.9D, 43.4D, 45.9D, 48.4D, 50.8D, 53.3D, 55.8D, 58.3D),
                     new ArtifactStatRarityData(5.1D, 5.8D, 6.6D, 7.3D)
+                )
+            }
+        );
+        public static readonly ArtifactStat FlatDefense = new ArtifactStat(
+            "DEF",
+            null,
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    null,
+                    new ArtifactStatRarityData(2.0D, 2.0D)
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    null,
+                    new ArtifactStatRarityData(4.0D, 5.0D, 6.0D)
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    null,
+                    new ArtifactStatRarityData(8.0D, 9.0D, 10.0D, 11.0D)
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    null,
+                    new ArtifactStatRarityData(13.0D, 15.0D, 17.0D, 19.0D)
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    null,
+                    new ArtifactStatRarityData(16.0D, 19.0D, 21.0D, 23.0D)
                 )
             }
         );
@@ -235,26 +263,367 @@ namespace GenshinArtifactCalculator.Artifact
                 new ArtifactStatRarity(
                     5,
                     new ArtifactStatRarityData(7.8D, 10.0D, 12.2D, 14.4D, 16.6D, 18.8D, 21.0D, 23.2D, 25.4D, 27.6D, 29.8D, 32.0D, 34.2D, 36.4D, 38.6D, 40.8D, 43.0D, 45.2D, 47.4D, 49.6D, 51.8D),
-                    new ArtifactStatRarityData(3.9D, 4.5D, 5.2D, 5.8D, 6.5D)
+                    new ArtifactStatRarityData(4.5D, 5.2D, 5.8D, 6.5D)
                 )
             }
         );
-        //
-        // public static readonly ArtifactStat PhysicalDamageBonus = new ArtifactStat("Physical DMG Bonus", '%');
-        // public static readonly ArtifactStat PyroDamageBonus     = new ArtifactStat("Anemo DMG Bonus", '%');
-        // public static readonly ArtifactStat HydroDamageBonus    = new ArtifactStat("Hydro DMG Bonus", '%');
-        // public static readonly ArtifactStat AnemoDamageBonus    = new ArtifactStat("Anemo DMG Bonus", '%');
-        // public static readonly ArtifactStat ElectroDamageBonus  = new ArtifactStat("Electro DMG Bonus", '%');
-        // public static readonly ArtifactStat DendroDamageBonus   = new ArtifactStat("Dendro DMG Bonus", '%');
-        // public static readonly ArtifactStat CryoDamageBonus     = new ArtifactStat("Cryo DMG Bonus", '%');
-        // public static readonly ArtifactStat GeoDamageBonus      = new ArtifactStat("Geo DMG Bonus", '%');
-        //
-        // public static readonly ArtifactStat CriticalRate   = new ArtifactStat("CRIT Rate", '%');
-        // public static readonly ArtifactStat CriticalDamage = new ArtifactStat("CRIT DMG", '%');
-        //
-        // public static readonly ArtifactStat HealingBonus = new ArtifactStat("Healing Bonus", '%');
 
-        private static readonly ArtifactStat[] Values = {PercentageHealth, FlatHealth, PercentageAttack, FlatAttack, PercentageDefense, /*FlatDefense,*/ ElementalMastery, EnergyRecharge /*, PhysicalDamageBonus, PyroDamageBonus, HydroDamageBonus, AnemoDamageBonus, ElectroDamageBonus, DendroDamageBonus, CryoDamageBonus, GeoDamageBonus, CriticalRate, CriticalDamage, HealingBonus*/};
+        public static readonly ArtifactStat PhysicalDamageBonus = new ArtifactStat(
+            "Physical DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.9D, 5.4D, 6.9D, 8.4D, 9.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(6.6D, 8.4D, 10.3D, 12.1D, 14.0D, 15.8D, 17.7D, 19.6D, 21.4D, 23.3D, 25.1D, 27.0D, 28.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(7.9D, 10.1D, 12.3D, 14.6D, 16.8D, 19.0D, 21.2D, 23.5D, 25.7D, 27.9D, 30.2D, 32.4D, 34.6D, 36.8D, 39.1D, 41.3D, 43.5D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(8.7D, 11.2D, 13.7D, 16.2D, 18.6D, 21.1D, 23.6D, 26.1D, 28.6D, 31.0D, 33.5D, 36.0D, 38.5D, 40.9D, 43.4D, 45.9D, 48.4D, 50.8D, 53.3D, 55.8D, 58.3D),
+                    null
+                )
+            }
+        );
+        public static readonly ArtifactStat PyroDamageBonus = new ArtifactStat(
+            "Anemo DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    null
+                )
+            }
+        );
+        public static readonly ArtifactStat HydroDamageBonus = new ArtifactStat(
+            "Hydro DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    null
+                )
+            }
+        );
+        public static readonly ArtifactStat AnemoDamageBonus = new ArtifactStat(
+            "Anemo DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    null
+                )
+            }
+        );
+        public static readonly ArtifactStat ElectroDamageBonus = new ArtifactStat(
+            "Electro DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    null
+                )
+            }
+        );
+        public static readonly ArtifactStat DendroDamageBonus = new ArtifactStat(
+            "Dendro DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    null
+                )
+            }
+        );
+        public static readonly ArtifactStat CryoDamageBonus = new ArtifactStat(
+            "Cryo DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    null
+                )
+            }
+        );
+        public static readonly ArtifactStat GeoDamageBonus = new ArtifactStat(
+            "Geo DMG Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(3.1D, 4.3D, 5.5D, 6.7D, 7.9D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(5.2D, 6.7D, 8.2D, 9.7D, 11.2D, 12.7D, 14.2D, 15.6D, 17.1D, 18.6D, 20.1D, 21.6D, 23.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(6.3D, 8.1D, 9.9D, 11.6D, 13.4D, 15.2D, 17.0D, 18.8D, 20.6D, 22.3D, 24.1D, 25.9D, 27.7D, 29.5D, 31.3D, 33.0D, 34.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D, 32.8D, 34.7D, 36.7D, 38.7D, 40.7D, 42.7D, 44.6D, 46.6D),
+                    null
+                )
+            }
+        );
+
+        public static readonly ArtifactStat CriticalRate = new ArtifactStat(
+            "CRIT Rate",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(2.1D, 2.9D, 3.7D, 4.5D, 5.3D),
+                    new ArtifactStatRarityData(0.8D, 1.0D)
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(2.8D, 3.6D, 4.4D, 5.2D, 6.0D, 6.8D, 7.6D, 8.3D, 9.1D),
+                    new ArtifactStatRarityData(1.1D, 1.3D, 1.6D)
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(3.5D, 4.5D, 5.5D, 6.5D, 7.5D, 8.4D, 9.4D, 10.4D, 11.4D, 12.4D, 13.4D, 14.4D, 15.4D),
+                    new ArtifactStatRarityData(1.6D, 1.9D, 2.1D, 2.3D)
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(4.2D, 5.4D, 6.6D, 7.8D, 9.0D, 10.1D, 11.3D, 12.5D, 13.7D, 14.9D, 16.1D, 17.3D, 18.5D, 19.7D, 20.8D, 22.0D, 23.2D),
+                    new ArtifactStatRarityData(2.2D, 2.5D, 2.8D, 3.1D)
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(4.7D, 6.0D, 7.4D, 8.7D, 10.0D, 11.4D, 12.7D, 14.0D, 15.4D, 16.7D, 18.0D, 19.3D, 20.7D, 22.0D, 23.3D, 24.7D, 26.0D, 27.3D, 28.7D, 30.0D, 31.1D),
+                    new ArtifactStatRarityData(2.7D, 3.1D, 3.5D, 3.9D)
+                )
+            }
+        );
+        public static readonly ArtifactStat CriticalDamage = new ArtifactStat(
+            "CRIT DMG",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(4.2D, 5.8D, 7.4D, 9.0D, 10.5D),
+                    new ArtifactStatRarityData(1.6D, 1.9D)
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(5.6D, 7.2D, 8.8D, 10.4D, 11.9D, 13.5D, 15.1D, 16.7D, 18.3D),
+                    new ArtifactStatRarityData(2.2D, 2.6D, 3.1D)
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(7.0D, 9.0D, 11.0D, 12.9D, 14.9D, 16.9D, 18.9D, 20.9D, 22.8D, 24.8D, 26.8D, 28.8D, 30.8D),
+                    new ArtifactStatRarityData(3.3D, 3.7D, 4.2D, 4.7D)
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(8.4D, 10.8D, 13.1D, 15.5D, 17.9D, 20.3D, 22.7D, 25.0D, 27.4D, 29.8D, 32.2D, 34.5D, 36.9D, 39.3D, 41.7D, 44.1D, 46.4D),
+                    new ArtifactStatRarityData(4.4D, 5.0D, 5.6D, 6.2D)
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(9.3D, 11.9D, 14.6D, 17.2D, 19.9D, 22.5D, 25.2D, 27.8D, 30.5D, 33.1D, 35.8D, 38.4D, 41.1D, 43.7D, 46.3D, 49.0D, 51.6D, 54.3D, 56.9D, 59.6D, 62.2D),
+                    new ArtifactStatRarityData(5.4D, 6.2D, 7.0D, 7.8D)
+                )
+            }
+        );
+
+        public static readonly ArtifactStat HealingBonus = new ArtifactStat(
+            "Healing Bonus",
+            '%',
+            new List<ArtifactStatRarity>
+            {
+                new ArtifactStatRarity(
+                    1,
+                    new ArtifactStatRarityData(2.4D, 3.3D, 4.3D, 5.2D, 6.1D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    2,
+                    new ArtifactStatRarityData(3.2D, 4.1D, 5.1D, 6.0D, 6.9D, 7.8D, 8.7D, 9.6D, 10.5D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    3,
+                    new ArtifactStatRarityData(4.0D, 5.2D, 6.3D, 7.5D, 8.6D, 9.8D, 10.9D, 12.0D, 13.2D, 14.3D, 15.5D, 16.6D, 17.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    4,
+                    new ArtifactStatRarityData(4.8D, 6.2D, 7.6D, 9.0D, 10.3D, 11.7D, 13.1D, 14.4D, 15.8D, 17.2D, 18.6D, 19.9D, 21.3D, 22.7D, 24.0D, 25.4D, 26.8D),
+                    null
+                ),
+                new ArtifactStatRarity(
+                    5,
+                    new ArtifactStatRarityData(5.4D, 6.9D, 8.4D, 10.0D, 13.0D, 14.5D, 16.1D, 17.6D, 19.1D, 20.6D, 22.2D, 23.7D, 25.2D, 26.7D, 28.3D, 29.8D, 31.3D, 32.8D, 34.4D, 35.9D),
+                    null
+                )
+            }
+        );
+
+        private static readonly ArtifactStat[] Values = {PercentageHealth, FlatHealth, PercentageAttack, FlatAttack, PercentageDefense, FlatDefense, ElementalMastery, EnergyRecharge, PhysicalDamageBonus, PyroDamageBonus, HydroDamageBonus, AnemoDamageBonus, ElectroDamageBonus, DendroDamageBonus, CryoDamageBonus, GeoDamageBonus, CriticalRate, CriticalDamage, HealingBonus};
 
         public static ArtifactStat? Parse(string? name)
         {

@@ -32,7 +32,7 @@ namespace GenshinArtifactCalculator
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath      = openFileDialog.FileName;
-                    fileExtension = Path.GetExtension(filePath).Substring(1);
+                    fileExtension = Path.GetExtension(filePath)[1..];
                 }
             }
             if (filePath.Length == 0 || fileExtension.Length == 0)
@@ -78,7 +78,7 @@ namespace GenshinArtifactCalculator
                 }
             }
             ArtifactData artifact = new ArtifactData(data);
-            MessageBox.Show($"Name: {artifact.Name}\nType: {artifact.Type.Name}\nUpgrade level: {artifact.GetBetterUpgradeLevel()}\nRarity: {artifact.GetBetterRarityLevel()}\nMain stat: {artifact.MainStat.Name}{artifact.GetBetterMainStatValue()}\nSub stats: {artifact.GetBetterSubStats()}", "Artifact data", MessageBoxButtons.OK);
+            MessageBox.Show($"Name: {artifact.Name}\nType: {artifact.Type.Name}\nUpgrade Level: {artifact.GetBetterUpgradeLevel()}\nRarity: {artifact.GetBetterRarityLevel()}\nMain Stat: {artifact.MainStat.Name}{artifact.GetBetterMainStatValue()}\nSub Stats: {artifact.GetBetterSubStats()}", "Artifact Data", MessageBoxButtons.OK);
         }
     }
 }
