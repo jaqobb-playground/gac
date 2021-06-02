@@ -1,5 +1,7 @@
 ﻿using GenshinArtifactCalculator.Util;
 using System;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace GenshinArtifactCalculator.Artifact
 {
@@ -11,27 +13,11 @@ namespace GenshinArtifactCalculator.Artifact
         public static readonly ArtifactType GobletOfEonothem = new ArtifactType("Goblet of Eonothem");
         public static readonly ArtifactType CircletOfLogos   = new ArtifactType("Circlet of Logos");
 
-        private static readonly ArtifactType[] Values = {FlowerOfLife, PlumeOfDeath, SandsOfEon, GobletOfEonothem, CircletOfLogos};
+        public static readonly ImmutableArray<ArtifactType> Values = ImmutableArray.Create(FlowerOfLife, PlumeOfDeath, SandsOfEon, GobletOfEonothem, CircletOfLogos);
 
         public static ArtifactType? Parse(string? name)
         {
-            if (name == null)
-            {
-                return null;
-            }
-            foreach (ArtifactType value in Values)
-            {
-                if (name.StartsWith(value.Name, StringComparison.OrdinalIgnoreCase))
-                {
-                    return value;
-                }
-                int levenshteinDistance = Utils.ComputeLevenshteinDistance(name, value.Name);
-                if (levenshteinDistance <= 2)
-                {
-                    return value;
-                }
-            }
-            return null;
+            return name == null ? null : Values.FirstOrDefault(value => name.StartsWith(value.Name, StringComparison.OrdinalIgnoreCase) || Utils.ComputeLevenshteinDistance(name, value.Name) <= 2);
         }
     }
 }
