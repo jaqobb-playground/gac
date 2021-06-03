@@ -45,6 +45,7 @@ namespace GenshinArtifactCalculator.Artifact
                     }
                     if (valuesSumDecimalPlaces > 0)
                     {
+                        // +/- 0.1 difference because of potential rounding issues on miHoYo's side.
                         if (Math.Round(valuesSum + 0.1D, 1).CompareTo(currentValueRounded) == 0 || Math.Round(valuesSum - 0.1D, 1).CompareTo(currentValueRounded) == 0)
                         {
                             return values;
@@ -52,6 +53,7 @@ namespace GenshinArtifactCalculator.Artifact
                     }
                     else
                     {
+                        // +/- 1 difference because of potential rounding issues on miHoYo's side.
                         if (Math.Round(valuesSum + 1.0D, 1).CompareTo(currentValueRounded) == 0 || Math.Round(valuesSum - 1.0D, 1).CompareTo(currentValueRounded) == 0)
                         {
                             return values;
