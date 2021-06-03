@@ -645,5 +645,26 @@ namespace GenshinArtifactCalculator.Artifact
             }
             return null;
         }
+
+        public static ArtifactStat? ParseExact(string? name)
+        {
+            if (name == null)
+            {
+                return null;
+            }
+            foreach (ArtifactStat value in Values)
+            {
+                string valueName = value.Name;
+                if (value.SpecialCharacter != null)
+                {
+                    valueName += value.SpecialCharacter;
+                }
+                if (name.Equals(valueName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return value;
+                }
+            }
+            return null;
+        }
     }
 }

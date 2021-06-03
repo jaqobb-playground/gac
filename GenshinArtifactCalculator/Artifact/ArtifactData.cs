@@ -95,7 +95,7 @@ namespace GenshinArtifactCalculator.Artifact
             string result = string.Empty;
             for (int rarityLevel = 1; rarityLevel <= RarityLevel; rarityLevel++)
             {
-                result += "\u2605";
+                result += "\u2605"; // ★
             }
             return result;
         }
@@ -109,7 +109,126 @@ namespace GenshinArtifactCalculator.Artifact
             return $"+{MainStatValue}";
         }
 
-        public string GetBetterSubStats()
+        public string GetBetterMainStatImportanceValue(ArtifactImportancePreset importancePreset)
+        {
+            if (!importancePreset.MainStatFactors.ContainsKey(Type))
+            {
+                return "(Could not calculate IV)";
+            }
+            Dictionary<ArtifactStat, ArtifactImportanceFactor> mainStatFactor = importancePreset.MainStatFactors[Type];
+            if (!mainStatFactor.ContainsKey(MainStat))
+            {
+                return "(Could not calcualte IV)";
+            }
+            ArtifactImportanceFactor importanceFactor             = mainStatFactor[MainStat];
+            double                   importanceValueMaximum       = importanceFactor.Values[0];
+            double                   importanceValueActualMaximum = importanceValueMaximum;
+            double                   importanceValue              = UpgradeLevel * importanceValueMaximum / 20;
+            foreach (KeyValuePair<ArtifactStat, ArtifactImportanceFactor> mainStatFactorEntry in mainStatFactor)
+            {
+                if (mainStatFactorEntry.Value.Values[0].CompareTo(importanceValueActualMaximum) > 0)
+                {
+                    importanceValueActualMaximum = mainStatFactorEntry.Value.Values[0];
+                }
+            }
+            return $"({importanceValue}/{importanceValueMaximum} | {importanceValue}/{importanceValueActualMaximum} IV)";
+        }
+
+        public string GetBetterImportanceValue(ArtifactImportancePreset importancePreset)
+        {
+            if (!importancePreset.MainStatFactors.ContainsKey(Type))
+            {
+                return "(Could not calculate IV)";
+            }
+            Dictionary<ArtifactStat, ArtifactImportanceFactor> mainStatFactor = importancePreset.MainStatFactors[Type];
+            if (!mainStatFactor.ContainsKey(MainStat))
+            {
+                return "(Could not calculate IV)";
+            }
+            double importanceValueMaximum       = 0.0D;
+            double importanceValueActualMaximum = 0.0D;
+            double importanceValue              = 0.0D;
+            {
+                ArtifactImportanceFactor importanceFactor = mainStatFactor[MainStat];
+                importanceValueMaximum += importanceFactor.Values[0];
+                double importanceValueActualMaximumTemporary = 0.0D;
+                foreach (KeyValuePair<ArtifactStat, ArtifactImportanceFactor> mainStatFactorEntry in mainStatFactor)
+                {
+                    if (mainStatFactorEntry.Value.Values[0].CompareTo(importanceValueActualMaximumTemporary) > 0)
+                    {
+                        importanceValueActualMaximumTemporary = mainStatFactorEntry.Value.Values[0];
+                    }
+                }
+                importanceValueActualMaximum += importanceValueActualMaximumTemporary;
+                importanceValue              += UpgradeLevel * importanceValueMaximum / 20;
+            }
+            {
+                if (SubStats != null)
+                {
+                    foreach ((ArtifactStat subStatKey, double subStatValue) in SubStats)
+                    {
+                        ArtifactStatRarityData subStatKeyData = subStatKey.GetRarityByLevel(RarityLevel).SubStatData!;
+                        foreach (double subStatKeyDataValue in subStatKeyData.GetValues(subStatValue, UpgradeLevel / 4 + 1))
+                        {
+                            if (!importancePreset.SubStatFactors.ContainsKey(Type))
+                            {
+                                return "(Could not calculate IV)";
+                            }
+                            Dictionary<ArtifactStat, ArtifactImportanceFactor> subStatFactor = importancePreset.SubStatFactors[Type];
+                            if (!subStatFactor.ContainsKey(subStatKey))
+                            {
+                                return "(Could not calculate IV)";
+                            }
+                            ArtifactImportanceFactor importanceFactor = subStatFactor[subStatKey];
+                            importanceValueMaximum += importanceFactor.Values[3];
+                            importanceValue        += importanceFactor.Values[subStatKeyData.GetIndexByValue(subStatKeyDataValue)];
+                        }
+                    }
+                    if (!importancePreset.SubStatFactors.ContainsKey(Type))
+                    {
+                        return "(Could not calculate IV)";
+                    }
+                    {
+                        Dictionary<ArtifactStat, ArtifactImportanceFactor> subStatFactor         = importancePreset.SubStatFactors[Type];
+                        List<ArtifactStat>                                 excludedArtifactStats = new List<ArtifactStat>();
+                        excludedArtifactStats.Add(MainStat);
+                        while (excludedArtifactStats.Count != 5)
+                        {
+                            ArtifactStat? subStatFactorStat   = null;
+                            double        subStatFactorValue  = 0.0D;
+                            foreach (KeyValuePair<ArtifactStat, ArtifactImportanceFactor> subStatFactorEntry in subStatFactor)
+                            {
+                                if (excludedArtifactStats.Contains(subStatFactorEntry.Key))
+                                {
+                                    continue;
+                                }
+                                if (subStatFactorValue.CompareTo(subStatFactorEntry.Value.Values[3]) < 0)
+                                {
+                                    subStatFactorStat  = subStatFactorEntry.Key;
+                                    subStatFactorValue = subStatFactorEntry.Value.Values[3];
+                                }
+                            }
+                            if (subStatFactorStat == null || subStatFactorValue.CompareTo(0.0D) == 0)
+                            {
+                                break;
+                            }
+                            excludedArtifactStats.Add(subStatFactorStat);
+                            if (excludedArtifactStats.Count == 2)
+                            {
+                                importanceValueActualMaximum += subStatFactorValue * 6;
+                            }
+                            else
+                            {
+                                importanceValueActualMaximum += subStatFactorValue;
+                            }
+                        }
+                    }
+                }
+            }
+            return $"{importanceValue}/{importanceValueMaximum} ({importanceValue}/{importanceValueActualMaximum})";
+        }
+
+        public string GetBetterSubStats(ArtifactImportancePreset importancePreset)
         {
             if (SubStats == null)
             {
@@ -120,7 +239,7 @@ namespace GenshinArtifactCalculator.Artifact
             {
                 result += "\n";
                 result += $" - {subStatKey.Name}+";
-                if (subStatKey.SpecialCharacter != null && subStatKey.SpecialCharacter.Value == '%')
+                if (subStatKey.SpecialCharacter is '%')
                 {
                     result += $"{subStatValue:0.0}%";
                 }
@@ -132,13 +251,33 @@ namespace GenshinArtifactCalculator.Artifact
                 foreach (double subStatKeyDataValue in subStatKeyData.GetValues(subStatValue, UpgradeLevel / 4 + 1))
                 {
                     result += "\n";
-                    if (subStatKey.SpecialCharacter != null && subStatKey.SpecialCharacter.Value == '%')
+                    if (subStatKey.SpecialCharacter is '%')
                     {
                         result += $"    - +{subStatKeyDataValue:0.0}/{subStatKeyData.PossibleValues[^1]:0.0}% ({subStatKeyData.GetIndexByValue(subStatKeyDataValue) + 1}/{subStatKeyData.PossibleValues.Length})";
                     }
                     else
                     {
                         result += $"    - +{subStatKeyDataValue}/{subStatKeyData.PossibleValues[^1]} ({subStatKeyData.GetIndexByValue(subStatKeyDataValue) + 1}/{subStatKeyData.PossibleValues.Length})";
+                    }
+
+                    if (!importancePreset.MainStatFactors.ContainsKey(Type))
+                    {
+                        result += " (Could not calculate IV)";
+                    }
+                    else
+                    {
+                        Dictionary<ArtifactStat, ArtifactImportanceFactor> subStatFactor = importancePreset.SubStatFactors[Type];
+                        if (!subStatFactor.ContainsKey(subStatKey))
+                        {
+                            result += " (Could not calculate IV)";
+                        }
+                        else
+                        {
+                            ArtifactImportanceFactor importanceFactor       = subStatFactor[subStatKey];
+                            double                   importanceValueMaximum = importanceFactor.Values[3];
+                            double                   importanceValue        = importanceFactor.Values[subStatKeyData.GetIndexByValue(subStatKeyDataValue)];
+                            result += $" ({importanceValue}/{importanceValueMaximum} IV)";
+                        }
                     }
                 }
             }

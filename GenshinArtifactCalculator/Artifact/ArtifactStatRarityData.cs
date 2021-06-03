@@ -1,16 +1,17 @@
 ﻿using GenshinArtifactCalculator.Util;
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace GenshinArtifactCalculator.Artifact
 {
     public class ArtifactStatRarityData
     {
-        public readonly double[] PossibleValues;
+        public readonly ImmutableArray<double> PossibleValues;
 
         public ArtifactStatRarityData(params double[] possibleValues)
         {
-            PossibleValues = possibleValues;
+            PossibleValues = ImmutableArray.Create(possibleValues);
         }
 
         public int GetIndexByValue(double value)
