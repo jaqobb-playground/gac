@@ -131,7 +131,7 @@ namespace GenshinArtifactCalculator.Artifact
                     importanceValueActualMaximum = mainStatFactorEntry.Value.Values[0];
                 }
             }
-            return $"({importanceValue}/{importanceValueMaximum} | {importanceValue}/{importanceValueActualMaximum} IV)";
+            return $"({importanceValue}/{importanceValueMaximum} [{Math.Round(importanceValue / importanceValueMaximum * 100, 1)}%] | {importanceValue}/{importanceValueActualMaximum} [{Math.Round(importanceValue / importanceValueActualMaximum * 100, 1)}%] IV)";
         }
 
         public string GetBetterImportanceValue(ArtifactImportancePreset importancePreset)
@@ -194,8 +194,8 @@ namespace GenshinArtifactCalculator.Artifact
                         excludedArtifactStats.Add(MainStat);
                         while (excludedArtifactStats.Count != 5)
                         {
-                            ArtifactStat? subStatFactorStat   = null;
-                            double        subStatFactorValue  = 0.0D;
+                            ArtifactStat? subStatFactorStat  = null;
+                            double        subStatFactorValue = 0.0D;
                             foreach (KeyValuePair<ArtifactStat, ArtifactImportanceFactor> subStatFactorEntry in subStatFactor)
                             {
                                 if (excludedArtifactStats.Contains(subStatFactorEntry.Key))
@@ -225,7 +225,7 @@ namespace GenshinArtifactCalculator.Artifact
                     }
                 }
             }
-            return $"{importanceValue}/{importanceValueMaximum} ({importanceValue}/{importanceValueActualMaximum})";
+            return $"{importanceValue}/{importanceValueMaximum} [{Math.Round(importanceValue / importanceValueMaximum * 100, 1)}%] ({importanceValue}/{importanceValueActualMaximum} [{Math.Round(importanceValue / importanceValueActualMaximum * 100, 1)}%])";
         }
 
         public string GetBetterSubStats(ArtifactImportancePreset importancePreset)
