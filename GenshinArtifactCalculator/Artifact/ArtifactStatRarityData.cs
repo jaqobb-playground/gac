@@ -12,7 +12,6 @@ namespace GenshinArtifactCalculator.Artifact
 
         public ArtifactStatRarityData(params double[] possibleValues)
         {
-            //
             PossibleValues = ImmutableArray.Create(possibleValues);
         }
 
