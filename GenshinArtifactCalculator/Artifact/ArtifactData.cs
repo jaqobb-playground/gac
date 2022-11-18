@@ -1,39 +1,38 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace GenshinArtifactCalculator.Artifact
 {
     public class ArtifactData
     {
-        public readonly string                            Name;
-        public readonly ArtifactType                      Type;
-        public readonly int                               UpgradeLevel;
-        public readonly int                               RarityLevel;
-        public readonly ArtifactStat                      MainStat;
-        public readonly double                            MainStatValue;
+        public readonly string Name;
+        public readonly ArtifactType Type;
+        public readonly int UpgradeLevel;
+        public readonly int RarityLevel;
+        public readonly ArtifactStat MainStat;
+        public readonly double MainStatValue;
         public readonly Dictionary<ArtifactStat, double>? SubStats;
 
         public ArtifactData(IDictionary<object, object> data)
         {
-            JArray parsedResults = (JArray) data["ParsedResults"];
-            foreach (JToken parsedResult in parsedResults)
+            JArray results = (JArray)data["ParsedResults"];
+            foreach (JToken result in results)
             {
-                JObject parsedObject = parsedResult.Value<JObject>()!;
-                long    exitCode     = parsedObject!["FileParseExitCode"]!.Value<long>();
+                JObject obj = result.Value<JObject>()!;
+                long exitCode = obj["FileParseExitCode"]!.Value<long>();
                 if (exitCode != 1L)
                 {
                     continue;
                 }
-                JObject textOverlay = parsedObject["TextOverlay"]!.Value<JObject>()!;
-                JArray  lines       = textOverlay["Lines"]!.Value<JArray>()!;
-                string  mainStat    = string.Empty;
-                for (int index = 0; index < lines.Count; index++)
+                JObject textOverlay = obj["TextOverlay"]!.Value<JObject>()!;
+                JArray lines = textOverlay["Lines"]!.Value<JArray>()!;
+                string mainStat = string.Empty;
+                for (int i = 0; i < lines.Count; i++)
                 {
-                    JObject line     = lines[index].Value<JObject>()!;
-                    string  lineText = line["LineText"]!.Value<string>()!;
-                    switch (index)
+                    JObject line = lines[i].Value<JObject>()!;
+                    string lineText = line["LineText"]!.Value<string>()!;
+                    switch (i)
                     {
                         case 0:
                             Name = lineText;
@@ -45,9 +44,9 @@ namespace GenshinArtifactCalculator.Artifact
                             mainStat += $"{lineText}+";
                             break;
                         case 3:
-                            mainStat      += lineText;
-                            MainStat      =  ArtifactStats.Parse(mainStat) ?? throw new Exception($"{mainStat} is not a valid artifact stat");
-                            MainStatValue =  double.Parse(mainStat.Split("+")[1].Replace(",", "").Replace("%", ""));
+                            mainStat += lineText;
+                            MainStat = ArtifactStats.Parse(mainStat) ?? throw new Exception($"{mainStat} is not a valid artifact stat");
+                            MainStatValue = double.Parse(mainStat.Split("+")[1].Replace(",", "").Replace("%", ""));
                             break;
                         case 4:
                             UpgradeLevel = int.Parse(lineText.StartsWith("+") ? lineText.Substring(1) : lineText);
@@ -77,10 +76,14 @@ namespace GenshinArtifactCalculator.Artifact
             }
             else
             {
-                foreach (ArtifactStatRarity rarity in MainStat.Rarities.Where(rarity => rarity.MainStatData!.PossibleValues.Length > UpgradeLevel && rarity.MainStatData!.PossibleValues[UpgradeLevel].CompareTo(MainStatValue) == 0))
+                foreach (ArtifactStatRarity rarity in MainStat.Rarities)
                 {
-                    RarityLevel = rarity.Level;
-                    break;
+                    ArtifactStatRarityData rarityData = rarity.MainStatData!;
+                    if (rarityData.PossibleValues.Length > UpgradeLevel && rarityData.PossibleValues[UpgradeLevel].CompareTo(MainStatValue) == 0)
+                    {
+                        RarityLevel = rarity.Level;
+                        break;
+                    }
                 }
             }
         }
@@ -102,7 +105,7 @@ namespace GenshinArtifactCalculator.Artifact
 
         public string GetBetterMainStatValue()
         {
-            if (MainStat.SpecialCharacter != null && MainStat.SpecialCharacter.Value == '%')
+            if (MainStat.Symbol is '%')
             {
                 return $"+{MainStatValue:0.0}%";
             }
@@ -120,10 +123,10 @@ namespace GenshinArtifactCalculator.Artifact
             {
                 return "(Could not calcualte IV)";
             }
-            ArtifactImportanceFactor importanceFactor             = mainStatFactor[MainStat];
-            double                   importanceValueMaximum       = importanceFactor.Values[0];
-            double                   importanceValueActualMaximum = importanceValueMaximum;
-            double                   importanceValue              = UpgradeLevel * importanceValueMaximum / 20;
+            ArtifactImportanceFactor importanceFactor = mainStatFactor[MainStat];
+            double importanceValueMaximum = importanceFactor.Values[0];
+            double importanceValueActualMaximum = importanceValueMaximum;
+            double importanceValue = UpgradeLevel * importanceValueMaximum / 20;
             foreach (KeyValuePair<ArtifactStat, ArtifactImportanceFactor> mainStatFactorEntry in mainStatFactor)
             {
                 if (mainStatFactorEntry.Value.Values[0].CompareTo(importanceValueActualMaximum) > 0)
@@ -145,9 +148,9 @@ namespace GenshinArtifactCalculator.Artifact
             {
                 return "(Could not calculate IV)";
             }
-            double importanceValueMaximum       = 0.0D;
+            double importanceValueMaximum = 0.0D;
             double importanceValueActualMaximum = 0.0D;
-            double importanceValue              = 0.0D;
+            double importanceValue = 0.0D;
             {
                 ArtifactImportanceFactor importanceFactor = mainStatFactor[MainStat];
                 importanceValueMaximum += importanceFactor.Values[0];
@@ -160,7 +163,7 @@ namespace GenshinArtifactCalculator.Artifact
                     }
                 }
                 importanceValueActualMaximum += importanceValueActualMaximumTemporary;
-                importanceValue              += UpgradeLevel * importanceValueMaximum / 20;
+                importanceValue += UpgradeLevel * importanceValueMaximum / 20;
             }
             {
                 if (SubStats != null)
@@ -181,7 +184,7 @@ namespace GenshinArtifactCalculator.Artifact
                             }
                             ArtifactImportanceFactor importanceFactor = subStatFactor[subStatKey];
                             importanceValueMaximum += importanceFactor.Values[3];
-                            importanceValue        += importanceFactor.Values[subStatKeyData.GetIndexByValue(subStatKeyDataValue)];
+                            importanceValue += importanceFactor.Values[subStatKeyData.GetIndexByValue(subStatKeyDataValue)];
                         }
                     }
                     if (!importancePreset.SubStatFactors.ContainsKey(Type))
@@ -189,13 +192,12 @@ namespace GenshinArtifactCalculator.Artifact
                         return "(Could not calculate IV)";
                     }
                     {
-                        Dictionary<ArtifactStat, ArtifactImportanceFactor> subStatFactor         = importancePreset.SubStatFactors[Type];
-                        List<ArtifactStat>                                 excludedArtifactStats = new List<ArtifactStat>();
-                        excludedArtifactStats.Add(MainStat);
+                        Dictionary<ArtifactStat, ArtifactImportanceFactor> subStatFactor = importancePreset.SubStatFactors[Type];
+                        List<ArtifactStat> excludedArtifactStats = new() { MainStat };
                         while (excludedArtifactStats.Count != 5)
                         {
-                            ArtifactStat? subStatFactorStat  = null;
-                            double        subStatFactorValue = 0.0D;
+                            ArtifactStat? subStatFactorStat = null;
+                            double subStatFactorValue = 0.0D;
                             foreach (KeyValuePair<ArtifactStat, ArtifactImportanceFactor> subStatFactorEntry in subStatFactor)
                             {
                                 if (excludedArtifactStats.Contains(subStatFactorEntry.Key))
@@ -204,7 +206,7 @@ namespace GenshinArtifactCalculator.Artifact
                                 }
                                 if (subStatFactorValue.CompareTo(subStatFactorEntry.Value.Values[3]) < 0)
                                 {
-                                    subStatFactorStat  = subStatFactorEntry.Key;
+                                    subStatFactorStat = subStatFactorEntry.Key;
                                     subStatFactorValue = subStatFactorEntry.Value.Values[3];
                                 }
                             }
@@ -239,7 +241,7 @@ namespace GenshinArtifactCalculator.Artifact
             {
                 result += "\n";
                 result += $" - {subStatKey.Name}+";
-                if (subStatKey.SpecialCharacter is '%')
+                if (subStatKey.Symbol is '%')
                 {
                     result += $"{subStatValue:0.0}%";
                 }
@@ -251,7 +253,7 @@ namespace GenshinArtifactCalculator.Artifact
                 foreach (double subStatKeyDataValue in subStatKeyData.GetValues(subStatValue, UpgradeLevel / 4 + 1))
                 {
                     result += "\n";
-                    if (subStatKey.SpecialCharacter is '%')
+                    if (subStatKey.Symbol is '%')
                     {
                         result += $"    - +{subStatKeyDataValue:0.0}/{subStatKeyData.PossibleValues[^1]:0.0}% ({subStatKeyData.GetIndexByValue(subStatKeyDataValue) + 1}/{subStatKeyData.PossibleValues.Length})";
                     }
@@ -259,7 +261,6 @@ namespace GenshinArtifactCalculator.Artifact
                     {
                         result += $"    - +{subStatKeyDataValue}/{subStatKeyData.PossibleValues[^1]} ({subStatKeyData.GetIndexByValue(subStatKeyDataValue) + 1}/{subStatKeyData.PossibleValues.Length})";
                     }
-
                     if (!importancePreset.MainStatFactors.ContainsKey(Type))
                     {
                         result += " (Could not calculate IV)";
@@ -273,9 +274,9 @@ namespace GenshinArtifactCalculator.Artifact
                         }
                         else
                         {
-                            ArtifactImportanceFactor importanceFactor       = subStatFactor[subStatKey];
-                            double                   importanceValueMaximum = importanceFactor.Values[3];
-                            double                   importanceValue        = importanceFactor.Values[subStatKeyData.GetIndexByValue(subStatKeyDataValue)];
+                            ArtifactImportanceFactor importanceFactor = subStatFactor[subStatKey];
+                            double importanceValueMaximum = importanceFactor.Values[3];
+                            double importanceValue = importanceFactor.Values[subStatKeyData.GetIndexByValue(subStatKeyDataValue)];
                             result += $" ({importanceValue}/{importanceValueMaximum} IV)";
                         }
                     }

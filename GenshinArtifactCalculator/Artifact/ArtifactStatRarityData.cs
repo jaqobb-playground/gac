@@ -1,7 +1,8 @@
-﻿using GenshinArtifactCalculator.Util;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using GenshinArtifactCalculator.Util;
 
 namespace GenshinArtifactCalculator.Artifact
 {
@@ -26,19 +27,19 @@ namespace GenshinArtifactCalculator.Artifact
             return -1;
         }
 
-        public double[] GetValues(double currentValue, int iterations)
+        public IEnumerable<double> GetValues(double currentValue, int iterations)
         {
             double currentValueRounded = Math.Round(currentValue, 1);
             for (int iteration = 0; iteration < iterations; iteration++)
             {
-                double[] values         = new double[iteration + 1];
-                int      valueIndexFill = 0;
+                double[] values = new double[iteration + 1];
+                int valueIndexFill = 0;
                 ComputationLoop:
                 foreach (double possibleValue in PossibleValues)
                 {
                     values[valueIndexFill] = possibleValue;
-                    double  valuesSum              = Math.Round(values.Sum(), 1);
-                    decimal valuesSumDecimalPlaces = Utils.CountDecimalPlaces((decimal) valuesSum);
+                    double valuesSum = Math.Round(values.Sum(), 1);
+                    decimal valuesSumDecimalPlaces = Utils.CountDecimalPlaces((decimal)valuesSum);
                     if (valuesSum.CompareTo(currentValueRounded) == 0)
                     {
                         return values;
@@ -67,7 +68,7 @@ namespace GenshinArtifactCalculator.Artifact
                     {
                         if (valueIndexFill == 0)
                         {
-                            values[0]      = PossibleValues[0];
+                            values[0] = PossibleValues[0];
                             valueIndexFill = values.Length - 1;
                             goto ComputationLoop;
                         }

@@ -4,15 +4,15 @@ namespace GenshinArtifactCalculator.Artifact
 {
     public class ArtifactStat
     {
-        public readonly string                   Name;
-        public readonly char?                    SpecialCharacter;
+        public readonly string Name;
+        public readonly char? Symbol;
         public readonly List<ArtifactStatRarity> Rarities;
 
-        public ArtifactStat(string name, char? specialCharacter, List<ArtifactStatRarity> rarities)
+        public ArtifactStat(string name, char? symbol, List<ArtifactStatRarity> rarities)
         {
-            Name             = name;
-            SpecialCharacter = specialCharacter;
-            Rarities         = rarities;
+            Name = name;
+            Symbol = symbol;
+            Rarities = rarities;
         }
 
         public ArtifactStatRarity GetRarityByLevel(int level)

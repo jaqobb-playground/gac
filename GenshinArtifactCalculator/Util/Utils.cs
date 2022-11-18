@@ -15,8 +15,8 @@ namespace GenshinArtifactCalculator.Util
             {
                 return s.Length;
             }
-            int    n = s.Length;
-            int    m = t.Length;
+            int n = s.Length;
+            int m = t.Length;
             int[,] d = new int[n + 1, m + 1];
             for (int i = 0; i <= n; i++)
             {
@@ -43,11 +43,11 @@ namespace GenshinArtifactCalculator.Util
         // https://stackoverflow.com/questions/6092243/c-sharp-check-if-a-decimal-has-more-than-3-decimal-places
         public static decimal CountDecimalPlaces(decimal dec)
         {
-            int[] bits       = decimal.GetBits(dec);
-            ulong lowInt     = (uint) bits[0];
-            ulong midInt     = (uint) bits[1];
-            int   exponent   = (bits[3] & 0x00FF0000) >> 16;
-            int   result     = exponent;
+            int[] bits = decimal.GetBits(dec);
+            ulong lowInt = (uint)bits[0];
+            ulong midInt = (uint)bits[1];
+            int exponent = (bits[3] & 0x00FF0000) >> 16;
+            int result = exponent;
             ulong lowDecimal = lowInt | (midInt << 32);
             while (result > 0 && (lowDecimal % 10) == 0)
             {
