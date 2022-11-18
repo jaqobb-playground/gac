@@ -39,7 +39,7 @@ namespace GenshinArtifactCalculator.Artifact
                 {
                     values[valueIndexFill] = possibleValue;
                     double valuesSum = Math.Round(values.Sum(), 1);
-                    decimal valuesSumDecimalPlaces = Utils.CountDecimalPlaces((decimal)valuesSum);
+                    decimal valuesSumDecimalPlaces = Utils.CountDecimalPlaces((decimal) valuesSum);
                     if (valuesSum.CompareTo(currentValueRounded) == 0)
                     {
                         return values;

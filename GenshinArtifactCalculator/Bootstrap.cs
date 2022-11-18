@@ -128,7 +128,7 @@ namespace GenshinArtifactCalculator
                 MessageBox.Show("Could not deserialize response.", "Error", MessageBoxButtons.OK);
                 return;
             }
-            long exitCode = (long)data["OCRExitCode"];
+            long exitCode = (long) data["OCRExitCode"];
             if (exitCode != 1L)
             {
                 switch (exitCode)

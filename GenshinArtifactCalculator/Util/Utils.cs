@@ -44,8 +44,8 @@ namespace GenshinArtifactCalculator.Util
         public static decimal CountDecimalPlaces(decimal dec)
         {
             int[] bits = decimal.GetBits(dec);
-            ulong lowInt = (uint)bits[0];
-            ulong midInt = (uint)bits[1];
+            ulong lowInt = (uint) bits[0];
+            ulong midInt = (uint) bits[1];
             int exponent = (bits[3] & 0x00FF0000) >> 16;
             int result = exponent;
             ulong lowDecimal = lowInt | (midInt << 32);

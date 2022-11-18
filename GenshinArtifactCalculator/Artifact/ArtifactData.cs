@@ -16,7 +16,7 @@ namespace GenshinArtifactCalculator.Artifact
 
         public ArtifactData(IDictionary<object, object> data)
         {
-            JArray results = (JArray)data["ParsedResults"];
+            JArray results = (JArray) data["ParsedResults"];
             foreach (JToken result in results)
             {
                 JObject obj = result.Value<JObject>()!;
