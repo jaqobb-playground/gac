@@ -1,4 +1,4 @@
-# gac
+# GAC
 
 Artifact importance value calculator for Genshin Impact. GAC is a simple and effective tool that lets you calculate Genshin Impact artifact importance value using Optical Character Recognition (ORC) engine to scan and read artifact image.
 
